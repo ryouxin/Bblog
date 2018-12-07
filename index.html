@@ -193,17 +193,20 @@
 <p>重启nginx冰退出<br>service nginx restart<br>docker restart mynginx</p>
 <p>安装数据库扩展<br>docker exec  -it myphpfpm /bin/bash<br>docker-php-ext-install bcmath dba exif mysqli pdo_mysql sysvsem sysvshm </p>
 <p>安装redis<br>docker exec  -it myphpfpm /bin/bash<br>pecl install redis &amp;&amp; docker-php-ext-enable redis</p>
-<p>安装pecl扩展</p>
-<h1 id="Install-PECL-extensions"><a href="#Install-PECL-extensions" class="headerlink" title="Install PECL extensions"></a>Install PECL extensions</h1><p>$ apt-get install -y \</p>
-<pre><code># for memcache
+<p>安装pecl扩展<br>// Install PECL extensions<br>$ apt-get install -y \</p>
+<pre><code>// for memcache
 libmemcache-dev \
 
-# for memcached
+// for memcached
 libmemcached-dev \
 
 &amp;&amp; pecl install memcache &amp;&amp; docker-php-ext-enable memcache \
 &amp;&amp; pecl install memcached &amp;&amp; docker-php-ext-enable memcached \
-</code></pre><h1 id="amp-amp-pecl-install-gearman-amp-amp-docker-php-ext-enable-gearman"><a href="#amp-amp-pecl-install-gearman-amp-amp-docker-php-ext-enable-gearman" class="headerlink" title="&amp;&amp; pecl install gearman &amp;&amp; docker-php-ext-enable gearman \"></a>&amp;&amp; pecl install gearman &amp;&amp; docker-php-ext-enable gearman \</h1><h1 id="amp-amp-pecl-install-xdebug-amp-amp-docker-php-ext-enable-xdebug"><a href="#amp-amp-pecl-install-xdebug-amp-amp-docker-php-ext-enable-xdebug" class="headerlink" title="&amp;&amp; pecl install xdebug &amp;&amp; docker-php-ext-enable xdebug \"></a>&amp;&amp; pecl install xdebug &amp;&amp; docker-php-ext-enable xdebug \</h1><h1 id="amp-amp-pecl-install-redis-amp-amp-docker-php-ext-enable-redis"><a href="#amp-amp-pecl-install-redis-amp-amp-docker-php-ext-enable-redis" class="headerlink" title="&amp;&amp; pecl install redis &amp;&amp; docker-php-ext-enable redis \"></a>&amp;&amp; pecl install redis &amp;&amp; docker-php-ext-enable redis \</h1><h1 id="amp-amp-pecl-install-xhprof-amp-amp-docker-php-ext-enable-xhprof"><a href="#amp-amp-pecl-install-xhprof-amp-amp-docker-php-ext-enable-xhprof" class="headerlink" title="&amp;&amp; pecl install xhprof &amp;&amp; docker-php-ext-enable xhprof"></a>&amp;&amp; pecl install xhprof &amp;&amp; docker-php-ext-enable xhprof</h1><p>安装php x-cache 扩展<br>$ curl -fsSL ‘<a href="https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;" target="_blank" rel="noopener">https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;</a> -o xcache.tar.gz \<br>     &amp;&amp; mkdir -p xcache \<br>     &amp;&amp; tar -xf xcache.tar.gz -C xcache –strip-components=1 \<br>     &amp;&amp; rm xcache.tar.gz \<br>     &amp;&amp; ( \<br>         cd xcache \<br>         &amp;&amp; phpize \<br>         &amp;&amp; ./configure –enable-xcache \<br>         &amp;&amp; make -j$(nproc) \<br>         &amp;&amp; make install \<br>     ) \<br>     &amp;&amp; rm -r xcache \<br>     &amp;&amp; docker-php-ext-enable xcache</p>
+&amp;&amp; pecl install gearman &amp;&amp; docker-php-ext-enable gearman \
+&amp;&amp; pecl install xdebug &amp;&amp; docker-php-ext-enable xdebug \
+&amp;&amp; pecl install redis &amp;&amp; docker-php-ext-enable redis \
+&amp;&amp; pecl install xhprof &amp;&amp; docker-php-ext-enable xhprof 
+</code></pre><p>安装php x-cache 扩展<br>$ curl -fsSL ‘<a href="https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;" target="_blank" rel="noopener">https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;</a> -o xcache.tar.gz \<br>     &amp;&amp; mkdir -p xcache \<br>     &amp;&amp; tar -xf xcache.tar.gz -C xcache –strip-components=1 \<br>     &amp;&amp; rm xcache.tar.gz \<br>     &amp;&amp; ( \<br>         cd xcache \<br>         &amp;&amp; phpize \<br>         &amp;&amp; ./configure –enable-xcache \<br>         &amp;&amp; make -j$(nproc) \<br>         &amp;&amp; make install \<br>     ) \<br>     &amp;&amp; rm -r xcache \<br>     &amp;&amp; docker-php-ext-enable xcache</p>
 <p>安装完之后退出myphpfpm容器并重启<br>docker restart myphpfpm</p>
 <p>重启后查看phpinfo发现x-cache已工作</p>
 <p>容器的保存、导出与导入</p>
