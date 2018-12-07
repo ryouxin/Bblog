@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryouxin.github.io">
-  <title>Archives: 2018 | Aamen</title>
+  <title>docker搭建php服务 | Aamen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Aamen">
-<meta property="og:url" content="https://ryouxin.github.io/archives/2018/index.html">
+  <meta name="description" content="1.登录远端服务器并且下载dockerapt-get install docker 下载完成后运行 docker info 如果输出docker信息则表示docker安装成功 安装成功后，拉取nginx、php镜像并查看已有镜像docker pull nginx      #拉取nginx镜像docker pull php:5.6    #拉取php5.6镜像docker images">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker搭建php服务">
+<meta property="og:url" content="https://ryouxin.github.io/2018/12/07/nginx配置php/index.html">
 <meta property="og:site_name" content="Aamen">
+<meta property="og:description" content="1.登录远端服务器并且下载dockerapt-get install docker 下载完成后运行 docker info 如果输出docker信息则表示docker安装成功 安装成功后，拉取nginx、php镜像并查看已有镜像docker pull nginx      #拉取nginx镜像docker pull php:5.6    #拉取php5.6镜像docker images">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-07T09:59:00.925Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Aamen">
+<meta name="twitter:title" content="docker搭建php服务">
+<meta name="twitter:description" content="1.登录远端服务器并且下载dockerapt-get install docker 下载完成后运行 docker info 如果输出docker信息则表示docker安装成功 安装成功后，拉取nginx、php镜像并查看已有镜像docker pull nginx      #拉取nginx镜像docker pull php:5.6    #拉取php5.6镜像docker images">
   
     <link rel="alternative" href="/atom.xml" title="Aamen" type="application/atom+xml">
   
@@ -150,76 +154,196 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-nginx配置php" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      docker搭建php服务
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/12/07/nginx配置php/" class="archive-article-date">
+
+        
+        <a href="/2018/12/07/nginx配置php/" class="archive-article-date">
   	<time datetime="2018-12-07T05:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-07</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/07/nginx配置php/">docker搭建php服务</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.登录远端服务器并且下载docker<br>apt-get install docker</p>
+<p>下载完成后运行 docker info 如果输出docker信息则表示docker安装成功</p>
+<p>安装成功后，拉取nginx、php镜像并查看已有镜像<br>docker pull nginx      #拉取nginx镜像<br>docker pull php:5.6    #拉取php5.6镜像<br>docker images          #查看已有镜像</p>
+<p>镜像拉取成功后，开始构建容器并挂载nginx配置目录</p>
+<p>mkdir -p nginx/www nginx/conf #创建nginx目录用来挂载容器www和conf目录</p>
+<ul>
+<li>mkdir -p, –parents  可以是一个路径名称。此时若路径中的某些目录尚不存在, 加上此选项后, 系统将自动建立好那些尚不存在的目录, 即一次可以建立多个目录; </li>
+</ul>
+<p>创建容器<br>docker run -d -p 9000:9000 -v $PWD/www:/usr/share/nginx/html –name myphpfpm php:5.6-fpm<br>docker run -d -p 8080:80 -v $PWD/www:/usr/share/nginx/html –name mynginx –link myphpfpm:phpfpm nginx #构建Nginx容器</p>
+<p>docker ps -a 查看所有已创建的容器 status列表示容器运行状态，如果创建容器后容器自动退出<br>先删除容器<br>docker rm [CONTAINER ID]</p>
+<p>再运行<br>docker run -dit -p 9000:9000 -v $PWD/www:/usr/share/nginx/html –name myphpfpm php:5.6-fpm<br>docker run -dit -p 8080:80 -v $PWD/www:/usr/share/nginx/html –name mynginx –link myphpfpm:phpfpm nginx</p>
+<ul>
+<li>docker run -it<br>-i: 以交互模式运行容器，通常与 -t 同时使用；<br>-t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用；</li>
+</ul>
+<p>创建完容器并且运行成功后配置nginx容器<br>docker exec -it mynginx /bin/bash<br>vim /etc/nginx/conf.d/default.conf #若无vi 先运行 apt-get update、 apt-get install vim 下载并安装vim</p>
+<p>docker exec [OPTIONS] CONTAINER COMMAND [ARG…]<br>-d : 分离模式: 在后台运行<br>-i : 即使没有附加也保持 STDIN 打开<br>-t : 分配一个伪终端</p>
+<p>修改default.conf中php配置如下<br>location ~ .php$ {<br>   fastcgi_pass   phpfpm:9000;<br>   fastcgi_index  index.php;<br>   fastcgi_param  SCRIPT_FILENAME  /usr/share/nginx/html$fastcgi_script_name;<br>   fastcgi_param  SCRIPT_NAME      $fastcgi_script_name;<br>   include        fastcgi_params;<br>}</p>
+<p>//重新加载nginx配置并生效后退出容器<br>//nginx -s reload<br>//exit</p>
+<p>重启nginx冰退出<br>service nginx restart<br>docker restart mynginx</p>
+<p>安装数据库扩展<br>docker exec  -it myphpfpm /bin/bash<br>docker-php-ext-install bcmath dba exif mysqli pdo_mysql sysvsem sysvshm </p>
+<p>安装redis<br>docker exec  -it myphpfpm /bin/bash<br>pecl install redis &amp;&amp; docker-php-ext-enable redis</p>
+<p>安装pecl扩展</p>
+<h1 id="Install-PECL-extensions"><a href="#Install-PECL-extensions" class="headerlink" title="Install PECL extensions"></a>Install PECL extensions</h1><p>$ apt-get install -y \</p>
+<pre><code># for memcache
+libmemcache-dev \
 
-        <div class="article-info info-on-right">
-          
-          
+# for memcached
+libmemcached-dev \
 
+&amp;&amp; pecl install memcache &amp;&amp; docker-php-ext-enable memcache \
+&amp;&amp; pecl install memcached &amp;&amp; docker-php-ext-enable memcached \
+</code></pre><h1 id="amp-amp-pecl-install-gearman-amp-amp-docker-php-ext-enable-gearman"><a href="#amp-amp-pecl-install-gearman-amp-amp-docker-php-ext-enable-gearman" class="headerlink" title="&amp;&amp; pecl install gearman &amp;&amp; docker-php-ext-enable gearman \"></a>&amp;&amp; pecl install gearman &amp;&amp; docker-php-ext-enable gearman \</h1><h1 id="amp-amp-pecl-install-xdebug-amp-amp-docker-php-ext-enable-xdebug"><a href="#amp-amp-pecl-install-xdebug-amp-amp-docker-php-ext-enable-xdebug" class="headerlink" title="&amp;&amp; pecl install xdebug &amp;&amp; docker-php-ext-enable xdebug \"></a>&amp;&amp; pecl install xdebug &amp;&amp; docker-php-ext-enable xdebug \</h1><h1 id="amp-amp-pecl-install-redis-amp-amp-docker-php-ext-enable-redis"><a href="#amp-amp-pecl-install-redis-amp-amp-docker-php-ext-enable-redis" class="headerlink" title="&amp;&amp; pecl install redis &amp;&amp; docker-php-ext-enable redis \"></a>&amp;&amp; pecl install redis &amp;&amp; docker-php-ext-enable redis \</h1><h1 id="amp-amp-pecl-install-xhprof-amp-amp-docker-php-ext-enable-xhprof"><a href="#amp-amp-pecl-install-xhprof-amp-amp-docker-php-ext-enable-xhprof" class="headerlink" title="&amp;&amp; pecl install xhprof &amp;&amp; docker-php-ext-enable xhprof"></a>&amp;&amp; pecl install xhprof &amp;&amp; docker-php-ext-enable xhprof</h1><p>安装php x-cache 扩展<br>$ curl -fsSL ‘<a href="https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;" target="_blank" rel="noopener">https://xcache.lighttpd.net/pub/Releases/3.2.0/xcache-3.2.0.tar.gz&#39;</a> -o xcache.tar.gz \<br>     &amp;&amp; mkdir -p xcache \<br>     &amp;&amp; tar -xf xcache.tar.gz -C xcache –strip-components=1 \<br>     &amp;&amp; rm xcache.tar.gz \<br>     &amp;&amp; ( \<br>         cd xcache \<br>         &amp;&amp; phpize \<br>         &amp;&amp; ./configure –enable-xcache \<br>         &amp;&amp; make -j$(nproc) \<br>         &amp;&amp; make install \<br>     ) \<br>     &amp;&amp; rm -r xcache \<br>     &amp;&amp; docker-php-ext-enable xcache</p>
+<p>安装完之后退出myphpfpm容器并重启<br>docker restart myphpfpm</p>
+<p>重启后查看phpinfo发现x-cache已工作</p>
+<p>容器的保存、导出与导入</p>
+<p>先将生成好的容器创建为镜像<br>docker commit myphpfpm myphpfpm_img<br>docker commit mynginx  mynginx_img</p>
+<p>保存指定镜像为tar文件</p>
+<p>docker images #查看生成好的镜像id<br>docker save [IMAGE ID] &gt; xxx.tar</p>
+<p>保存成功之后 先让我们删除之前创建的所有容器以及镜像<br>docker stop $(docker ps -aq)<br>docker rm $(docker ps -aq)<br>docker rmi $(docker images -q)</p>
+<p>加载image<br>docker load &lt; xxx.tar #之前生成的image压缩文件</p>
+<p>加载成功后标记本地镜像<br>docker images<br>docker tag [IMAGE ID] xxx:1</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryouxin.github.io/2018/12/07/nginx配置php/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/12/05/第一篇文章/" class="archive-article-date">
-  	<time datetime="2018-12-05T09:49:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-05</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/05/第一篇文章/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第一篇文章</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/05/第一篇文章/">第一篇文章</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -242,8 +366,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
