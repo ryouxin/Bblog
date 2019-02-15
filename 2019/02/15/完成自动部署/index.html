@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aamen</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="aamen,"> 
+    <meta name="description" content="从新建vue项目到引入组件Element一、新建项目123456789101112131.查看 node和npm是不是已经安装好命令：node -v  npm -v (没有安装的先安装环境);2.n,"> 
+    <meta name="author" content="Aamen"> 
+    <link rel="alternative" href="atom.xml" title="Aamen" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">使用gitlab CI/CD 完成自动部署</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">使用gitlab CI/CD 完成自动部署</h1>
+        <div class="stuff">
+            <span>二月 15, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/运维/">运维</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>添加Gitlab的官方源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># For Debian/Ubuntu</span><br><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.deb.sh | sudo bash</span><br><span class="line"></span><br><span class="line"># For CentOS</span><br><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure></p>
+<p>安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># For Debian/Ubuntu</span><br><span class="line">sudo apt-get install gitlab-ci-multi-runner</span><br><span class="line"></span><br><span class="line"># For CentOS</span><br><span class="line">sudo yum install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure></p>
+<p>注册Runner<br>Runner需要注册到Gitlab才可以被项目所使用，一个gitlab-ci-multi-runner服务可以注册多个Runner。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-ci-multi-runner register</span><br><span class="line"></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</span><br><span class="line">https://mygitlab.com/ci</span><br><span class="line">Please enter the gitlab-ci token for this runner</span><br><span class="line">xxx-xxx-xxx</span><br><span class="line">Please enter the gitlab-ci description for this runner</span><br><span class="line">my-runner</span><br><span class="line">INFO[0034] fcf5c619 Registering runner... succeeded</span><br><span class="line">Please enter the executor: shell, docker, docker-ssh, ssh?</span><br><span class="line">docker</span><br><span class="line">Please enter the Docker image (eg. ruby:2.1):</span><br><span class="line">node:4.5.0</span><br><span class="line">INFO[0037] Runner registered successfully. Feel free to start it, but if it&apos;s</span><br><span class="line">running already the config should be automatically reloaded!</span><br></pre></td></tr></table></figure></p>
+<p>更新Runner<br>如果需要更新Runner，只需要执行以下脚本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># For Debian/Ubuntu</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install gitlab-ci-multi-runner</span><br><span class="line"></span><br><span class="line"># For CentOS</span><br><span class="line">sudo yum update</span><br><span class="line">sudo yum install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure><br>  Runner高级配置<br>通过gitlab-ci-multi-runner register注册的Runner配置会存储在/etc/gitlab-runner/config.toml中，如果需要修改可直接编辑该文件。详见这里<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">concurrent = 4</span><br><span class="line">check_interval = 0</span><br><span class="line"></span><br><span class="line">[[runners]]</span><br><span class="line">  name = &quot;test&quot;</span><br><span class="line">  url = &quot;http://your-domain.com/ci&quot;</span><br><span class="line">  token = &quot;your-token&quot;</span><br><span class="line">  executor = &quot;docker&quot;</span><br><span class="line">  [runners.docker]</span><br><span class="line">    tls_verify = false</span><br><span class="line">    image = &quot;node:4.5.0&quot;</span><br><span class="line">    privileged = false</span><br><span class="line">    disable_cache = false</span><br><span class="line">    volumes = [&quot;/cache&quot;]</span><br><span class="line">  [runners.cache]</span><br><span class="line">  [runners.kubernetes]</span><br><span class="line">    host = &quot;&quot;</span><br><span class="line">    cert_file = &quot;&quot;</span><br><span class="line">    key_file = &quot;&quot;</span><br><span class="line">    ca_file = &quot;&quot;</span><br><span class="line">    image = &quot;&quot;</span><br><span class="line">    namespace = &quot;&quot;</span><br><span class="line">    privileged = false</span><br><span class="line">    cpus = &quot;&quot;</span><br><span class="line">    memory = &quot;&quot;</span><br><span class="line">    service_cpus = &quot;&quot;</span><br><span class="line">    service_memory = &quot;&quot;</span><br></pre></td></tr></table></figure><br>到这里我们的Runner就安装配置好了，接下来是对项目根目录中.gitlab-ci.yml进行配置。</p>
+<p>配置构建任务<br>在项目根目录添加.gitlab-ci.yml文件<br>关于该文件的各项配置请见</p>
+<p>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 这里使用了我自己的docker image，配置了自己需要的环境</span><br><span class="line">image: wuyanxin/node</span><br><span class="line"></span><br><span class="line">variables:</span><br><span class="line">MYSQL_DATABASE: wan_ark-unit</span><br><span class="line">MYSQL_ALLOW_EMPTY_PASSWORD: &quot;yes&quot;</span><br><span class="line"></span><br><span class="line"># 关于service请见: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-service</span><br><span class="line">services:</span><br><span class="line">- mysql:5.6</span><br><span class="line">- redis:3.2.4</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">- test</span><br><span class="line">- eslint</span><br><span class="line">- deploy</span><br><span class="line"></span><br><span class="line">before_script:</span><br><span class="line">- echo &apos;REDIS_HOST=redis&apos; &gt;&gt; .env</span><br><span class="line">- echo &apos;DB_HOST=mysql&apos; &gt;&gt; .env</span><br><span class="line">- yarn install</span><br><span class="line"></span><br><span class="line">test_service:</span><br><span class="line">stage: test</span><br><span class="line">script:</span><br><span class="line">- npm run build</span><br><span class="line">- npm test</span><br><span class="line"></span><br><span class="line">eslint_src: </span><br><span class="line">stage: eslint</span><br><span class="line">script:</span><br><span class="line">- npm run lint</span><br><span class="line">allow_failure: true</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">stage: deploy</span><br><span class="line">script:</span><br><span class="line">- echo &apos;deployd!&apos;</span><br><span class="line">only: </span><br><span class="line">- master</span><br></pre></td></tr></table></figure><br>这里使用了nodejs项目作为例子，其他语言类似语法。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="dd9478fe9b45c0677efd" data-cs="8dd7f2038439badc74850b24f0f837561a6a8765" data-r="Bblog" data-o="ryouxin" data-a="ryouxin" data-d="false">查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-131509355-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+</html>
