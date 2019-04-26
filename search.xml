@@ -3,6 +3,25 @@
   
     
     <entry>
+      <title>linux配置开机脚本、以其他用户身份运行</title>
+      <link href="/2019/04/26/linux%E9%85%8D%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%84%9A%E6%9C%AC/"/>
+      <url>/2019/04/26/linux%E9%85%8D%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%84%9A%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<p>1.开机脚本</p><p>linux开机的时候会自动执行 /etc/rc.local 里面的命令<br>将命令写在 exit 0 之前便可执行</p><p>2.以其他用户身份运行</p><p>以其他身份用户运行并修改可以避免操作修改了文件所有者</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - ubuntu -c &apos;cd COMMAND&apos;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> 运维 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>php7安装redis扩展</title>
       <link href="/2019/04/12/php7%E5%AE%89%E8%A3%85redis%E6%89%A9%E5%B1%95/"/>
       <url>/2019/04/12/php7%E5%AE%89%E8%A3%85redis%E6%89%A9%E5%B1%95/</url>
@@ -10,6 +29,14 @@
         <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br><span class="line">apt-get install php7.0-dev        # 为了有phpize命令</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/phpredis/phpredis.git # 下载redi包，需要翻墙才能下载</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd phpredis</span><br><span class="line">git checkout php7</span><br><span class="line">phpize</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">cd ..</span><br><span class="line">rm -rf phpredis</span><br></pre></td></tr></table></figure><p>最后将 extension=redis.so 写入php.ini文件</p>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> php </tag>
+            
+        </tags>
       
     </entry>
     
