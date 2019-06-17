@@ -3,6 +3,17 @@
   
     
     <entry>
+      <title>ssh证书登录</title>
+      <link href="/2019/06/17/ssh/"/>
+      <url>/2019/06/17/ssh/</url>
+      
+        <content type="html"><![CDATA[<ol><li>打开 SSH 客户端（ Mac 自带终端）。</li><li>查找您云服务器关联的 SSH 密钥文件本地存放地址。</li><li><p>密钥必须不公开可见，SSH 才能工作。<br> chmod 400 documents/summary/tencentcloud/tencent_cloud_ssh.dms</p></li><li><p>输入命令：ssh [-i 密钥文件路径] <a href="mailto:root@x.x.x.x" target="_blank" rel="noopener">root@x.x.x.x</a>。<br> ssh -i “documents/summary/tencentcloud/tencent_cloud_ssh.dms” <a href="mailto:root@x.x.x.x" target="_blank" rel="noopener">root@x.x.x.x</a></p></li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
       <title>php混淆文件</title>
       <link href="/2019/06/13/php%E6%B7%B7%E6%B7%86/"/>
       <url>/2019/06/13/php%E6%B7%B7%E6%B7%86/</url>
