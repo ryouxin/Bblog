@@ -3,6 +3,27 @@
   
     
     <entry>
+      <title>php7打开页面为空白</title>
+      <link href="/2019/06/27/php7%E6%89%93%E5%BC%80%E9%A1%B5%E9%9D%A2%E4%B8%BA%E7%A9%BA%E7%99%BD/"/>
+      <url>/2019/06/27/php7%E6%89%93%E5%BC%80%E9%A1%B5%E9%9D%A2%E4%B8%BA%E7%A9%BA%E7%99%BD/</url>
+      
+        <content type="html"><![CDATA[<p>由于nginx与php-fpm之间的一个小bug，会导致这样的现象： 网站中的静态页面 <em>.html 都能正常访问，而 </em>.php 文件虽然会返回200状态码， 但实际输出给浏览器的页面内容却是空白。 简而言之，原因是nginx无法正确的将 *.php 文件的地址传递给php-fpm去解析， 相当于php-fpm接受到了请求，但这请求却指向一个不存在的文件，于是返回空结果。 为了解决这个问题，需要改动nginx默认的fastcgiparams配置文件： vi /etc/nginx/fastcgi_params 在文件的最后增加两行： </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">fastcgi_param PATH_INFO                $fastcgi_script_name;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> php </tag>
+            
+            <tag> nginx </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>ssh登录</title>
       <link href="/2019/06/17/ssh/"/>
       <url>/2019/06/17/ssh/</url>
