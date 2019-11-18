@@ -28,7 +28,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">linux配置开机脚本、以其他用户身份运行</h3>
+    <h3 class="subtitle">center os 部署 swoole</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -45,20 +45,32 @@
     <div class="section">
         <div class="article">
     <div class="main">
-        <h1 class="title">linux配置开机脚本、以其他用户身份运行</h1>
+        <h1 class="title">center os 部署 swoole</h1>
         <div class="stuff">
-            <span>四月 26, 2019</span>
+            <span>十一月 18, 2019</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/linux/">linux</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/运维/">运维</a></li></ul>
-
 
         </div>
         <div class="content markdown">
-            <p>1.开机脚本</p>
-<p>linux开机的时候会自动执行 /etc/rc.local 里面的命令<br>将命令写在 exit 0 之前便可执行</p>
-<p>2.以其他用户身份运行</p>
-<p>以其他身份用户运行并修改可以避免操作修改了文件所有者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - ubuntu -c &apos;cd COMMAND&apos;</span><br></pre></td></tr></table></figure>
+            <p>今天通过pecl安装 swoole<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pecl install swoole</span><br></pre></td></tr></table></figure></p>
+<p>步骤很简单，但是最后安装成功后发现phpinfo()中未显示swoole扩展，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -m | grep swoole</span><br></pre></td></tr></table></figure>
+<p>发现报错如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Warning: PHP Startup: Unable to load dynamic library &apos;/usr/lib64/php/modules/swoole.so&apos; - /usr/lib64/php/modules/swoole.so: undefined symbol: mysqlnd_find_charset_nr in Unknown on line 0</span><br></pre></td></tr></table></figure><br>        仔细看报错发现这条报错是由swoole.so报出来的，说明在加载swoole.so的时候报的找不到 mysqlnd_find_charset_nr ，这是一个以 mysqlnd 打头的一个关键字，而 mysqlnd 又是 PHP 的一个扩展，通过阅读 swoole/swoole.mysql.c 的源码我们发现有如下一段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const MYSQLND_CHARSET* cset = mysqlnd_find_charset_nr(client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">if (cset == NULL)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">    swoole_php_fatal_error(E_ERROR, &quot;unknown mysql charset[%s].&quot;, client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">    RETURN_FALSE;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的源码我们可以看出，原来 swoole 是需要依赖 msyqlnd 这个扩展的，我们发现 phpinfo() 里面 msyqlnd 扩展是存在的为什么还会报这个错呢。</p>
+<p>　　最后发现 PHP默认加载的扩展都在 /usr/lib64/php/modules/ 这个目录里在，这里面的 .so 文件是默认加载的，关于这些扩展的配置不是在 /etc/php.ini 中，而是在 /etc/php.d/ 这个目录中，这个目录当中的所有的 .ini 文件是在 /etc/php.ini 加载完成后再加载的，而我们的 extension=swoole.so 的配置是写在 /etc/php.ini 的文件末尾，所以是先加载了 swoole.so 然后再加载 mysqlnd.so，这就导致了 swoole 找不到 mysqlnd_find_charset_nr 。</p>
+<p>解决方法：<br>1、将/etc/php.d/ 目录中的mysqlnd.ini文件删除</p>
+<p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=mysqlnd.so</p>
+<p>3、重新启动 php-fpm </p>
+<p>这样可以解决问题了，同样可能还会遇到以下报错：</p>
+<p>PHP Warning: PHP Startup: Unable to load dynamic library ‘/usr/lib64/php/modules/swoole.so’ - /usr/lib64/php/modules/swoole.so: undefined symbol: php_sockets_le_socket in Unknown on line 0</p>
+<p>解决的方法也是类似的：</p>
+<p>1、将/etc/php.d/ 目录中的sockets.ini文件删除</p>
+<p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=sockets.so</p>
+<p>3、重新启动 php-fpm </p>
+<p>问题解决，安装swoole过程中，如果有其它报错，也可以参考Github上关于swoole的issue，附上链接：</p>
+<p>Swoole安装问题，及websocket示例问题总结</p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">

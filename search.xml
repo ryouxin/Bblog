@@ -3,6 +3,28 @@
   
     
     <entry>
+      <title>center os 部署 swoole</title>
+      <link href="/2019/11/18/center%20os%20%E9%83%A8%E7%BD%B2%20swoole%20/"/>
+      <url>/2019/11/18/center%20os%20%E9%83%A8%E7%BD%B2%20swoole%20/</url>
+      
+        <content type="html"><![CDATA[<p>今天通过pecl安装 swoole<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pecl install swoole</span><br></pre></td></tr></table></figure></p><p>步骤很简单，但是最后安装成功后发现phpinfo()中未显示swoole扩展，执行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -m | grep swoole</span><br></pre></td></tr></table></figure><p>发现报错如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Warning: PHP Startup: Unable to load dynamic library &apos;/usr/lib64/php/modules/swoole.so&apos; - /usr/lib64/php/modules/swoole.so: undefined symbol: mysqlnd_find_charset_nr in Unknown on line 0</span><br></pre></td></tr></table></figure><br>        仔细看报错发现这条报错是由swoole.so报出来的，说明在加载swoole.so的时候报的找不到 mysqlnd_find_charset_nr ，这是一个以 mysqlnd 打头的一个关键字，而 mysqlnd 又是 PHP 的一个扩展，通过阅读 swoole/swoole.mysql.c 的源码我们发现有如下一段：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const MYSQLND_CHARSET* cset = mysqlnd_find_charset_nr(client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">if (cset == NULL)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">    swoole_php_fatal_error(E_ERROR, &quot;unknown mysql charset[%s].&quot;, client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">    RETURN_FALSE;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>从上面的源码我们可以看出，原来 swoole 是需要依赖 msyqlnd 这个扩展的，我们发现 phpinfo() 里面 msyqlnd 扩展是存在的为什么还会报这个错呢。</p><p>　　最后发现 PHP默认加载的扩展都在 /usr/lib64/php/modules/ 这个目录里在，这里面的 .so 文件是默认加载的，关于这些扩展的配置不是在 /etc/php.ini 中，而是在 /etc/php.d/ 这个目录中，这个目录当中的所有的 .ini 文件是在 /etc/php.ini 加载完成后再加载的，而我们的 extension=swoole.so 的配置是写在 /etc/php.ini 的文件末尾，所以是先加载了 swoole.so 然后再加载 mysqlnd.so，这就导致了 swoole 找不到 mysqlnd_find_charset_nr 。</p><p>解决方法：<br>1、将/etc/php.d/ 目录中的mysqlnd.ini文件删除</p><p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=mysqlnd.so</p><p>3、重新启动 php-fpm </p><p>这样可以解决问题了，同样可能还会遇到以下报错：</p><p>PHP Warning: PHP Startup: Unable to load dynamic library ‘/usr/lib64/php/modules/swoole.so’ - /usr/lib64/php/modules/swoole.so: undefined symbol: php_sockets_le_socket in Unknown on line 0</p><p>解决的方法也是类似的：</p><p>1、将/etc/php.d/ 目录中的sockets.ini文件删除</p><p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=sockets.so</p><p>3、重新启动 php-fpm </p><p>问题解决，安装swoole过程中，如果有其它报错，也可以参考Github上关于swoole的issue，附上链接：</p><p>Swoole安装问题，及websocket示例问题总结</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
+      <title>java、tomcat安装与部署</title>
+      <link href="/2019/11/18/java%E3%80%81tomcat%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2/"/>
+      <url>/2019/11/18/java%E3%80%81tomcat%E5%AE%89%E8%A3%85%E4%B8%8E%E9%83%A8%E7%BD%B2/</url>
+      
+        <content type="html"><![CDATA[<p>java安装<br>一、下载jdk</p><p>jdk下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p><p>下载jdk-8u152-linux-x64.rpm 或 jdk-8u152-linux-x64.tar.gz(根据自己的系统位数选择对应的包)</p><p>如图：</p><p>二、安装jdk</p><p>因为我安装的CentOS7.4系统自带jdk1.8，所以为了演示如何安装jdk，我需要先卸载系统自带的jdk</p><p>查看当前系统jdk的版本：java -version</p><p>列举匹配已安装的java的软件包：yum list installed | grep java</p><p>卸载安装的jdk：(yum命令参考：<a href="http://man.linuxde.net/yum" target="_blank" rel="noopener">http://man.linuxde.net/yum</a>)</p><p>yum -y remove java-1.7.0-openjdk*  </p><p>yum -y remove java-1.8.0-openjdk*</p><p>当结果出现了完毕！，就表示卸载成功。</p><p>安装jdk(介绍三种方法)</p><p>方法一：利用yum源来安装jdk（此方法不需要配置环境变量）</p><p>查看yum库中的java安装包 ：yum -y list java*</p><p>安装需要的jdk版本的所有java程序：yum -y install java-1.8.0-openjdk*</p><p>(安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64)</p><p>当结果出现了完毕！即安装完成。</p><p>查看java版本：java -version</p><p>方法二：用rpm安装jdk(可以使用man rpm命令查看rpm的帮助文档)</p><p>使用Xftp将下载好的jdk-8u152-linux-x64.rpm上传到CentOs上去，我这里放到了/home/lisonglin下 </p><p>使用rpm命令安装： rpm -ivh jdk-8u152-linux-x64.rpm</p><p>(默认安装在/usr/java目录下，不用配置环境变量)</p><p>方法三：手动解压JDK的压缩包，然后设置环境变量</p><p>使用Xftp将下载好的jdk-8u152-linux-x64.tar.gz上传到CentOs上去，我这里放到了/home/lisonglin下</p><p>先将之前使用rpm方式安装的jdk卸载掉(如果没有安装过可跳过此步骤)</p><p>查询之前安装的jdk名称：rpm -qa | grep jdk</p><p>卸载jdk：rpm -e –nodeps jdk1.8    (此处也可以使用全名jdk1.8-1.8.0_152-fcs.x86_64)</p><p>卸载完成！</p><p>1、复制安装包到/usr/java目录中(目录可以自己选)：cp jdk-8u152-linux-x64.tar.gz  /usr/java</p><p>2、切换到/usr/java目录下：cd /usr/java</p><p>3、解压缩包：tar -zxvf jdk-8u152-linux-x64.tar.gz </p><p>解压成功（表式JDK已安装成功，可查看jdk的文件夹）</p><p>此时java -version命令还不能使用：</p><p>4、配置环境变量</p><p>使用vim /etc/profile 编辑profile文件 输入： vim /etc/profile</p><p>向文件里面追加以下内容：</p><p>#set java environment<br>JAVA_HOME=/usr/java/jdk1.8.0_152<br>JRE_HOME=$JAVA_HOME/jre<br>PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin<br>CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib<br>export JAVA_HOME JRE_HOME PATH CLASSPATH</p><p>注释：</p><p>JAVA_HOME指明JDK安装路径，就是刚才安装时所选择的路径，此路径下包括lib，bin，jre等文件夹（tomcat，Eclipse的运行都需要依靠此变量）。</p><p>CLASSPATH为java加载类(class or lib)路径，只有类在classpath中，java命令才能识别，设：.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib。CLASSPATH变量值中的.表示当前目录</p><p>PATH使得系统可以在任何路径下识别java命令，设为：$JAVA_HOME/bin:$JRE_HOME/bin。</p><p>特别注意：环境变量值的结尾没有任何符号，不同值之间用:隔开（windows中用;）。</p><p>5、使配置文件生效：source /etc/profile</p><p>6、测试配置是否成功</p><p>tomcat</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
       <title>php7打开页面为空白</title>
       <link href="/2019/06/27/php7%E6%89%93%E5%BC%80%E9%A1%B5%E9%9D%A2%E4%B8%BA%E7%A9%BA%E7%99%BD/"/>
       <url>/2019/06/27/php7%E6%89%93%E5%BC%80%E9%A1%B5%E9%9D%A2%E4%B8%BA%E7%A9%BA%E7%99%BD/</url>
@@ -73,9 +95,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
@@ -166,9 +188,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
@@ -202,9 +224,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
