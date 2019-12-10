@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aamen</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="aamen,"> 
+    <meta name="description" content="今天通过pecl安装 swoole1pecl install swoole
+步骤很简单，但是最后安装成功后发现phpinfo()中未显示swoole扩展，执行：
+1php -m | grep swo,"> 
+    <meta name="author" content="Aamen"> 
+    <link rel="alternative" href="atom.xml" title="Aamen" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">java面试题及答案汇总-命名规则</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">java面试题及答案汇总-命名规则</h1>
+        <div class="stuff">
+            <span>十二月 09, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/java/">java</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/面试/">面试</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <pre><code>java程序是由类组成的；
+java应用程序必须有一个包含main方法的public类，main方法是程序的入口；
+java源文件的命名规则：
+如果有public类，那么源文件名就是public类名(一个文件中只能有一个public类)，而类名命名规则是：类的名字必须由大写字母开头而单词中的其他字母均为小写；如果类名称由多个单词组成，则每个单词的首字母均应为大写，如果类名称中包含单词缩写，则这个所写词的每个字母均应大写，命名类时应尽量选择名词。
+如果没有public类，就和遵循文件名命名规则；
+1.一个.java文件只能有1个public class
+(暗示可以没有)
+2.如果有public class,那么文件名必须与修饰符为public的类名相同
+(暗示,没有的话文件名可以随便起)
+其他：
+定义规范的目的是为了使项目的代码样式统一，使程序有良好的可读性。
+包的命名（全部小写，由域名定义）
+Java包的名字都是由小写单词组成。但是由于Java面向对象编程的特性，每一名Java程序员都 可以编写属于自己的Java包，为了保障每个Java包命名的唯一性，在最新的Java编程规范中，要求程序员在自己定义的包的名称之前加上唯一的前缀。 由于互联网上的域名称是不会重复的，所以程序员一般采用自己在互联网上的域名称作为自己程序包的唯一前缀。
+例如：net.frontfree.javagroup
+类的命名（单词首字母大写）
+根据约定，Java类名通常以大写字母开头，如果类名称由多个单词组成，则每个单词的首字母均应为大 写例如TestPage；如果类名称中包含单词缩写，则这个所写词的每个字母均应大写，如：XMLExample,还有一点命名技巧就是由于类是设计用来 代表对象的，所以在命名类时应尽量选择名词。
+例如： Graphics
+方法的命名（首字母小写，字母开头大写）
+方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头。
+例如：drawImage
+常量的命名（全部大写 ，常加下划线）
+常量的名字应该都使用大写字母，并且指出该常量完整含义。如果一个常量名称由多个单词组成，则应该用下划线来分割这些单词。
+例如：MAX_VALUE
+参数的命名
+参数的命名规范和方法的命名规范相同，而且为了避免阅读程序时造成迷惑，请在尽量保证参数名称为一个单词的情况下使参数的命名尽可能明确。
+Javadoc注释
+Java除了可以采用我们常见的注释方式之外，Java语言规范还定义了一种特殊的注释，也就是我们 所说的Javadoc注释，它是用来记录我们代码中的API的。Javadoc注释是一种多行注释，以/**开头，而以*/结束，注释可以包含一些 HTML标记符和专门的关键词。使用Javadoc 注释的好处是编写的注释可以被自动转为在线文档，省去了单独编写程序文档的麻烦。
+例如：
+/**
+* This is an example of
+* Javadoc
+* @author darchon
+* @version 0.1, 10/11/2002
+*/
+在每个程序的最开始部分，一般都用Javadoc注释对程序的总体描述以及版权信息，之后在主程序中 可以为每个类、接口、方法、字段添加 Javadoc注释，每个注释的开头部分先用一句话概括该类、接口、方法、字段所完成的功能，这句话应单独占据一行以突出其概括作用，在这句话后面可以跟 随更加详细的描述段落。在描述性段落之后还可以跟随一些以Javadoc注释标签开头的特殊段落，例如上面例子中的@auther和@version，这 些段落将在生成文档中以特定方式显示。
+变量和常量命名
+变量的命名
+主要的的命名规范有以下三种：
+Camel 标记法:首字母是小写的,接下来的单词都以大写字母开头
+Pascal 标记法:首字母是大写的,接下来的单词都以大写字母开头
+匈牙利标记法:在以Pascal标记法的变量前附加小写序列说明该变量的类型
+在Java我们一般使用匈牙利标记法，基本结构为scope_typeVariableName，它 使用1-3字符前缀来表示数据类型，3个字符的前缀必须小写，前缀后面是由表意性强的一个单词或多个单词组成的名字，而且每个单词的首写字母大写，其它字 母小写，这样保证了对变量名能够进行正确的断句。例如，定义一个整形变量，用来记录文档数量：intDocCount，其中int表明数据类型，后面为表 意的英文名，每个单词首字母大写。这样，在一个变量名就可以反映出变量类型和变量所存储的值的意义两方面内容，这使得代码语句可读性强、更加容易理解。 byte、int、char、long、float、 double、boolean和short。
+数据类型/前缀(附)
+byte b
+char c
+short sh
+int i
+long l
+char c
+string s
+float f
+double d
+hashtable h
+[] arr
+List lst
+Vector v
+StringBuffer sb
+Boolean b
+Byte bt
+Map map
+Object ob
+对于在多个函数内都要使用的全局变量，在前面再增加“g_”。例如一个全局的字符串变量：g_strUserInfo。
+在变量命名时要注意以下几点：
+· 选择有意义的名字，注意每个单词首字母要大写。
+· 在一段函数中不使用同一个变量表示前后意义不同的两个数值。
+· i、j、k等只作为小型循环的循环索引变量。
+· 避免用Flag来命名状态变量。
+· 用Is来命名逻辑变量，如：blnFileIsFound。通过这种给布尔变量肯定形式的命名方式，使得其它开发人员能够更为清楚的理解布尔变量所代表的意义。
+· 如果需要的话，在变量最后附加计算限定词，如：curSalesSum。
+· 命名不相包含，curSales和curSalesSum。
+· static final 变量(常量)的名字应该都大写，并且指出完整含义。
+· 如果需要对变量名进行缩写时，一定要注意整个代码中缩写规则的一致性。例如，如果在代码的某些区域中使用intCnt，而在另一些区域中又使用intCount，就会给代码增加不必要的复杂性。建议变量名中尽量不要出现缩写。
+· 通过在结尾处放置一个量词，就可创建更加统一的变量，它们更容易理解，也更容易搜索。例如，请使用 strCustomerFirst和strCustomerLast，而不要使用strFirstCustomer和strLastCustomer。常 用的量词后缀有：First（一组变量中的第一个）、Last（一组变量中的最后一个）、Next（一组变量中的下一个变量）、Prev（一组变量中的上 一个）、Cur（一组变量中的当前变量）。
+· 为每个变量选择最佳的数据类型，这样即能减少对内存的需求量，加快代码的执行速度，又会降低出错的可能性。用于变量的数据类型可能会影响该变量进行计算所产生的结果。在这种情况下，编译器不会产生运行期错误，它只是迫使该值符合数据类型的要求。这类问题极难查找。
+· 尽量缩小变量的作用域。如果变量的作用域大于它应有的范围，变量可继续存在，并且在不再需要该变量后的很长时间内仍然占用资源。它们的主要问题是，任何类 中的任何方法都能对它们进行修改，并且很难跟踪究竟是何处进行修改的。占用资源是作用域涉及的一个重要问题。对变量来说，尽量缩小作用域将会对应用程序的 可靠性产生巨大的影响。
+关于常量的命名方法，在JAVA代码中，无论什么时候，均提倡应用常量取代数字、固定字符串。也就是 说，程序中除0，1以外，尽量不应该出现其他数字。常量可以集中在程序开始部分定义或者更宽的作用域内，名字应该都使用大写字母，并且指出该常量完整含 义。如果一个常量名称由多个单词组成，则应该用下划线“_”来分割这些单词如：NUM_DAYS_IN_WEEK、MAX_VALUE。
+</code></pre>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="dd9478fe9b45c0677efd" data-cs="8dd7f2038439badc74850b24f0f837561a6a8765" data-r="Bblog" data-o="ryouxin" data-a="ryouxin" data-d="false">查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-131509355-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+</html>

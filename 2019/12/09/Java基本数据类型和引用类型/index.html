@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aamen</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="aamen,"> 
+    <meta name="description" content="今天通过pecl安装 swoole1pecl install swoole
+步骤很简单，但是最后安装成功后发现phpinfo()中未显示swoole扩展，执行：
+1php -m | grep swo,"> 
+    <meta name="author" content="Aamen"> 
+    <link rel="alternative" href="atom.xml" title="Aamen" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">Java基本数据类型和引用类型</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">Java基本数据类型和引用类型</h1>
+        <div class="stuff">
+            <span>十二月 09, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/java/">java</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/面试/">面试</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>八种基本数据类型<br><img src="/images/java基本数据类型和引用类型/基本数据类型.png" alt=""></p>
+<p>除掉这四类八种基本类型，其它的都是对象，也就是引用类型，包括数组。</p>
+<p>来看一段示例代码：</p>
+<p>一个Person类，提供了一个构造方法，一些get/set方法：<br><img src="/images/java基本数据类型和引用类型/v2-cfd01239a6114d8f72352e7d5b44a41f_hd.png" alt=""></p>
+<p>下面是测试的main方法：<br><img src="/images/java基本数据类型和引用类型/v2-a020f5f1b5b248f200391512cafb7513_hd.png" alt=""></p>
+<p>先看第一句代码</p>
+<p><img src="/images/java基本数据类型和引用类型/v2-44bced166052b8938755d5c8d4a9de3d_hd.png" alt=""><br>方法体里声明的基本数据类型在栈内存里，我们画一下<br><img src="/images/java基本数据类型和引用类型/v2-c6981f1aa0a68443af10c3de285026ea_hd.png" alt=""></p>
+<p>继续执行以下代码</p>
+<p><img src="/images/java基本数据类型和引用类型/v2-002755ee9e7ed63dc4b6d42e35bf9b8f_hd.png" alt=""></p>
+<p>对于基本数据类型来说，赋值（=号）就相当于拷贝了一份值，把int1的值100，拷贝给int2，继续画图<br><img src="/images/java基本数据类型和引用类型/v2-fe67275640ecf78439111f7514919a7a_hd.png" alt=""></p>
+<p>int1=500，直接修改int1的值为500，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-317de060c61f27d6c4093f586fb47c8a_hd.png" alt=""></p>
+<p>分别打印int1，int2的值，相信没有人会答错，分别是500，100。再来看数组的初始化</p>
+<p><img src="/images/java基本数据类型和引用类型/v2-4996988f6e9ecd487b5b000a28ceed0c_hd.png" alt=""></p>
+<p>先初始化arr1，当执行到new这个关键字，会在堆内存分配内存空间，并把该内存空间的地址赋值给arr1。<br><img src="/images/java基本数据类型和引用类型/v2-2be66d9d5e691906a89fedd36a7b6c94_hd.png" alt=""></p>
+<p>继续执行以下代码<br><img src="/images/java基本数据类型和引用类型/v2-76163c63cf6ba26ee9ecdf6aaf9e43d3_hd.png" alt=""></p>
+<p>这儿arr2初始化时并没有new关键字，并不会在堆内存里新开辟一块空间，而是把arr1里存的堆内存地址直接赋值给了arr2，对于引用类型来说，赋值（=号）就相当于拷贝了一份内存地址，也就是说arr1，arr2现在指向了同一块堆内存，表现形势如下图<br><img src="/images/java基本数据类型和引用类型/v2-eec4ae0d9e4f0368632f83cdb84390ad_hd.png" alt=""></p>
+<p>这时候执行如下代码<br><img src="/images/java基本数据类型和引用类型/v2-977c39560d6ff1b71196db80b5ff3023_hd.png" alt=""></p>
+<p>虽然只是修改arr1数组下标位置为3的值<br><img src="/images/java基本数据类型和引用类型/v2-0b745eae4cec0d8544a3ed4ac38dbef6_hd.png" alt=""></p>
+<p> 但由于<br> 数组arr1和数组arr2指向同一块堆内存，<br> 打印arr1[3]和arr2[3]的值，都是<br> 8。<br> 你答对了吗？再来看对象的初始化<br><img src="/images/java基本数据类型和引用类型/v2-2c5c3e2d89054e2a4996ed800739f357_hd.png" alt=""></p>
+<p>当看到这个new，这货肯定在堆内存里开辟了一块内存空间，Person里有一个叫name的String对象，String这个对象有点特殊，虽然没有new这个关键字，但还是在堆内存中开辟了一块空间，在String是一个很普通的类一文中已经讲解过了，这里就不再细讲了，String底层是数组实现的，数组也是引用类型，age为基本数据类型，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-84aed37c59f46cd56a46bd6c54623cd3_hd.png" alt=""></p>
+<p>上图中大框里的内容就是整个Person对象在堆内存中的体现，继续执行以下代码<br><img src="/images/java基本数据类型和引用类型/v2-24fb5472676485bc1d96a72f8f02ab9c_hd.png" alt=""></p>
+<p>没有new关键字，per2不会在堆内存中新开辟空间，和数组一样，也是把per1的内存地址直接赋值给了per2<br><img src="/images/java基本数据类型和引用类型/v2-65a1a85bf445923e68edc51fcc950ac2_hd.png" alt=""></p>
+<p>当我们修改per1的属性的时候<br><img src="/images/java基本数据类型和引用类型/v2-dcc8e0743cda50d7e19d05621039902b_hd.png" alt=""></p>
+<p>如下图两个红框里的内容，给对象（数组也是对象）赋值其实就是相当于引用重新指向一块堆内存，基本数据类型是直接修改值，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-ff22a589b60f01fc3c54f771fb919a20_hd.png" alt=""></p>
+<p>所以，不管打印per1还是per2的name、age，打印出来的结果都是<br>“李四”、35<br>，这个你也答对了吗？最后，我们来验证一下，结果是不是和文中说的一致。<br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""></p>
+<p>结果完全一致，回过头来看看<br>Java里的“==”比较符，<br>结果就不难理解了，代码如下<br><img src="/images/java基本数据类型和引用类型/v2-01779bec27a57527d24750289eccf4dc_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="dd9478fe9b45c0677efd" data-cs="8dd7f2038439badc74850b24f0f837561a6a8765" data-r="Bblog" data-o="ryouxin" data-a="ryouxin" data-d="false">查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-131509355-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+</html>

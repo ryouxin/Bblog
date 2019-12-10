@@ -3,6 +3,55 @@
   
     
     <entry>
+      <title>Java运算符及运算符的优先级</title>
+      <link href="/2019/12/10/Java%E8%BF%90%E7%AE%97%E7%AC%A6%E5%8F%8A%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/"/>
+      <url>/2019/12/10/Java%E8%BF%90%E7%AE%97%E7%AC%A6%E5%8F%8A%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    <entry>
+      <title>Java基本数据类型和引用类型</title>
+      <link href="/2019/12/09/Java%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/"/>
+      <url>/2019/12/09/Java%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/</url>
+      
+        <content type="html"><![CDATA[<p>八种基本数据类型<br><img src="/images/java基本数据类型和引用类型/基本数据类型.png" alt=""></p><p>除掉这四类八种基本类型，其它的都是对象，也就是引用类型，包括数组。</p><p>来看一段示例代码：</p><p>一个Person类，提供了一个构造方法，一些get/set方法：<br><img src="/images/java基本数据类型和引用类型/v2-cfd01239a6114d8f72352e7d5b44a41f_hd.png" alt=""></p><p>下面是测试的main方法：<br><img src="/images/java基本数据类型和引用类型/v2-a020f5f1b5b248f200391512cafb7513_hd.png" alt=""></p><p>先看第一句代码</p><p><img src="/images/java基本数据类型和引用类型/v2-44bced166052b8938755d5c8d4a9de3d_hd.png" alt=""><br>方法体里声明的基本数据类型在栈内存里，我们画一下<br><img src="/images/java基本数据类型和引用类型/v2-c6981f1aa0a68443af10c3de285026ea_hd.png" alt=""></p><p>继续执行以下代码</p><p><img src="/images/java基本数据类型和引用类型/v2-002755ee9e7ed63dc4b6d42e35bf9b8f_hd.png" alt=""></p><p>对于基本数据类型来说，赋值（=号）就相当于拷贝了一份值，把int1的值100，拷贝给int2，继续画图<br><img src="/images/java基本数据类型和引用类型/v2-fe67275640ecf78439111f7514919a7a_hd.png" alt=""></p><p>int1=500，直接修改int1的值为500，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-317de060c61f27d6c4093f586fb47c8a_hd.png" alt=""></p><p>分别打印int1，int2的值，相信没有人会答错，分别是500，100。再来看数组的初始化</p><p><img src="/images/java基本数据类型和引用类型/v2-4996988f6e9ecd487b5b000a28ceed0c_hd.png" alt=""></p><p>先初始化arr1，当执行到new这个关键字，会在堆内存分配内存空间，并把该内存空间的地址赋值给arr1。<br><img src="/images/java基本数据类型和引用类型/v2-2be66d9d5e691906a89fedd36a7b6c94_hd.png" alt=""></p><p>继续执行以下代码<br><img src="/images/java基本数据类型和引用类型/v2-76163c63cf6ba26ee9ecdf6aaf9e43d3_hd.png" alt=""></p><p>这儿arr2初始化时并没有new关键字，并不会在堆内存里新开辟一块空间，而是把arr1里存的堆内存地址直接赋值给了arr2，对于引用类型来说，赋值（=号）就相当于拷贝了一份内存地址，也就是说arr1，arr2现在指向了同一块堆内存，表现形势如下图<br><img src="/images/java基本数据类型和引用类型/v2-eec4ae0d9e4f0368632f83cdb84390ad_hd.png" alt=""></p><p>这时候执行如下代码<br><img src="/images/java基本数据类型和引用类型/v2-977c39560d6ff1b71196db80b5ff3023_hd.png" alt=""></p><p>虽然只是修改arr1数组下标位置为3的值<br><img src="/images/java基本数据类型和引用类型/v2-0b745eae4cec0d8544a3ed4ac38dbef6_hd.png" alt=""></p><p> 但由于<br> 数组arr1和数组arr2指向同一块堆内存，<br> 打印arr1[3]和arr2[3]的值，都是<br> 8。<br> 你答对了吗？再来看对象的初始化<br><img src="/images/java基本数据类型和引用类型/v2-2c5c3e2d89054e2a4996ed800739f357_hd.png" alt=""></p><p>当看到这个new，这货肯定在堆内存里开辟了一块内存空间，Person里有一个叫name的String对象，String这个对象有点特殊，虽然没有new这个关键字，但还是在堆内存中开辟了一块空间，在String是一个很普通的类一文中已经讲解过了，这里就不再细讲了，String底层是数组实现的，数组也是引用类型，age为基本数据类型，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-84aed37c59f46cd56a46bd6c54623cd3_hd.png" alt=""></p><p>上图中大框里的内容就是整个Person对象在堆内存中的体现，继续执行以下代码<br><img src="/images/java基本数据类型和引用类型/v2-24fb5472676485bc1d96a72f8f02ab9c_hd.png" alt=""></p><p>没有new关键字，per2不会在堆内存中新开辟空间，和数组一样，也是把per1的内存地址直接赋值给了per2<br><img src="/images/java基本数据类型和引用类型/v2-65a1a85bf445923e68edc51fcc950ac2_hd.png" alt=""></p><p>当我们修改per1的属性的时候<br><img src="/images/java基本数据类型和引用类型/v2-dcc8e0743cda50d7e19d05621039902b_hd.png" alt=""></p><p>如下图两个红框里的内容，给对象（数组也是对象）赋值其实就是相当于引用重新指向一块堆内存，基本数据类型是直接修改值，表现如下图<br><img src="/images/java基本数据类型和引用类型/v2-ff22a589b60f01fc3c54f771fb919a20_hd.png" alt=""></p><p>所以，不管打印per1还是per2的name、age，打印出来的结果都是<br>“李四”、35<br>，这个你也答对了吗？最后，我们来验证一下，结果是不是和文中说的一致。<br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""></p><p>结果完全一致，回过头来看看<br>Java里的“==”比较符，<br>结果就不难理解了，代码如下<br><img src="/images/java基本数据类型和引用类型/v2-01779bec27a57527d24750289eccf4dc_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""><br><img src="/images/java基本数据类型和引用类型/v2-554baf09fbb03374a26c8f9b722ba0fb_hd.png" alt=""></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>java面试题及答案汇总-命名规则</title>
+      <link href="/2019/12/09/java%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E7%AD%94%E6%A1%88%E6%B1%87%E6%80%BB-%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/"/>
+      <url>/2019/12/09/java%E9%9D%A2%E8%AF%95%E9%A2%98%E5%8F%8A%E7%AD%94%E6%A1%88%E6%B1%87%E6%80%BB-%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/</url>
+      
+        <content type="html"><![CDATA[<pre><code>java程序是由类组成的；java应用程序必须有一个包含main方法的public类，main方法是程序的入口；java源文件的命名规则：如果有public类，那么源文件名就是public类名(一个文件中只能有一个public类)，而类名命名规则是：类的名字必须由大写字母开头而单词中的其他字母均为小写；如果类名称由多个单词组成，则每个单词的首字母均应为大写，如果类名称中包含单词缩写，则这个所写词的每个字母均应大写，命名类时应尽量选择名词。如果没有public类，就和遵循文件名命名规则；1.一个.java文件只能有1个public class(暗示可以没有)2.如果有public class,那么文件名必须与修饰符为public的类名相同(暗示,没有的话文件名可以随便起)其他：定义规范的目的是为了使项目的代码样式统一，使程序有良好的可读性。包的命名（全部小写，由域名定义）Java包的名字都是由小写单词组成。但是由于Java面向对象编程的特性，每一名Java程序员都 可以编写属于自己的Java包，为了保障每个Java包命名的唯一性，在最新的Java编程规范中，要求程序员在自己定义的包的名称之前加上唯一的前缀。 由于互联网上的域名称是不会重复的，所以程序员一般采用自己在互联网上的域名称作为自己程序包的唯一前缀。例如：net.frontfree.javagroup类的命名（单词首字母大写）根据约定，Java类名通常以大写字母开头，如果类名称由多个单词组成，则每个单词的首字母均应为大 写例如TestPage；如果类名称中包含单词缩写，则这个所写词的每个字母均应大写，如：XMLExample,还有一点命名技巧就是由于类是设计用来 代表对象的，所以在命名类时应尽量选择名词。例如： Graphics方法的命名（首字母小写，字母开头大写）方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头。例如：drawImage常量的命名（全部大写 ，常加下划线）常量的名字应该都使用大写字母，并且指出该常量完整含义。如果一个常量名称由多个单词组成，则应该用下划线来分割这些单词。例如：MAX_VALUE参数的命名参数的命名规范和方法的命名规范相同，而且为了避免阅读程序时造成迷惑，请在尽量保证参数名称为一个单词的情况下使参数的命名尽可能明确。Javadoc注释Java除了可以采用我们常见的注释方式之外，Java语言规范还定义了一种特殊的注释，也就是我们 所说的Javadoc注释，它是用来记录我们代码中的API的。Javadoc注释是一种多行注释，以/**开头，而以*/结束，注释可以包含一些 HTML标记符和专门的关键词。使用Javadoc 注释的好处是编写的注释可以被自动转为在线文档，省去了单独编写程序文档的麻烦。例如：/*** This is an example of* Javadoc* @author darchon* @version 0.1, 10/11/2002*/在每个程序的最开始部分，一般都用Javadoc注释对程序的总体描述以及版权信息，之后在主程序中 可以为每个类、接口、方法、字段添加 Javadoc注释，每个注释的开头部分先用一句话概括该类、接口、方法、字段所完成的功能，这句话应单独占据一行以突出其概括作用，在这句话后面可以跟 随更加详细的描述段落。在描述性段落之后还可以跟随一些以Javadoc注释标签开头的特殊段落，例如上面例子中的@auther和@version，这 些段落将在生成文档中以特定方式显示。变量和常量命名变量的命名主要的的命名规范有以下三种：Camel 标记法:首字母是小写的,接下来的单词都以大写字母开头Pascal 标记法:首字母是大写的,接下来的单词都以大写字母开头匈牙利标记法:在以Pascal标记法的变量前附加小写序列说明该变量的类型在Java我们一般使用匈牙利标记法，基本结构为scope_typeVariableName，它 使用1-3字符前缀来表示数据类型，3个字符的前缀必须小写，前缀后面是由表意性强的一个单词或多个单词组成的名字，而且每个单词的首写字母大写，其它字 母小写，这样保证了对变量名能够进行正确的断句。例如，定义一个整形变量，用来记录文档数量：intDocCount，其中int表明数据类型，后面为表 意的英文名，每个单词首字母大写。这样，在一个变量名就可以反映出变量类型和变量所存储的值的意义两方面内容，这使得代码语句可读性强、更加容易理解。 byte、int、char、long、float、 double、boolean和short。数据类型/前缀(附)byte bchar cshort shint ilong lchar cstring sfloat fdouble dhashtable h[] arrList lstVector vStringBuffer sbBoolean bByte btMap mapObject ob对于在多个函数内都要使用的全局变量，在前面再增加“g_”。例如一个全局的字符串变量：g_strUserInfo。在变量命名时要注意以下几点：· 选择有意义的名字，注意每个单词首字母要大写。· 在一段函数中不使用同一个变量表示前后意义不同的两个数值。· i、j、k等只作为小型循环的循环索引变量。· 避免用Flag来命名状态变量。· 用Is来命名逻辑变量，如：blnFileIsFound。通过这种给布尔变量肯定形式的命名方式，使得其它开发人员能够更为清楚的理解布尔变量所代表的意义。· 如果需要的话，在变量最后附加计算限定词，如：curSalesSum。· 命名不相包含，curSales和curSalesSum。· static final 变量(常量)的名字应该都大写，并且指出完整含义。· 如果需要对变量名进行缩写时，一定要注意整个代码中缩写规则的一致性。例如，如果在代码的某些区域中使用intCnt，而在另一些区域中又使用intCount，就会给代码增加不必要的复杂性。建议变量名中尽量不要出现缩写。· 通过在结尾处放置一个量词，就可创建更加统一的变量，它们更容易理解，也更容易搜索。例如，请使用 strCustomerFirst和strCustomerLast，而不要使用strFirstCustomer和strLastCustomer。常 用的量词后缀有：First（一组变量中的第一个）、Last（一组变量中的最后一个）、Next（一组变量中的下一个变量）、Prev（一组变量中的上 一个）、Cur（一组变量中的当前变量）。· 为每个变量选择最佳的数据类型，这样即能减少对内存的需求量，加快代码的执行速度，又会降低出错的可能性。用于变量的数据类型可能会影响该变量进行计算所产生的结果。在这种情况下，编译器不会产生运行期错误，它只是迫使该值符合数据类型的要求。这类问题极难查找。· 尽量缩小变量的作用域。如果变量的作用域大于它应有的范围，变量可继续存在，并且在不再需要该变量后的很长时间内仍然占用资源。它们的主要问题是，任何类 中的任何方法都能对它们进行修改，并且很难跟踪究竟是何处进行修改的。占用资源是作用域涉及的一个重要问题。对变量来说，尽量缩小作用域将会对应用程序的 可靠性产生巨大的影响。关于常量的命名方法，在JAVA代码中，无论什么时候，均提倡应用常量取代数字、固定字符串。也就是 说，程序中除0，1以外，尽量不应该出现其他数字。常量可以集中在程序开始部分定义或者更宽的作用域内，名字应该都使用大写字母，并且指出该常量完整含 义。如果一个常量名称由多个单词组成，则应该用下划线“_”来分割这些单词如：NUM_DAYS_IN_WEEK、MAX_VALUE。</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>center os 部署 swoole</title>
       <link href="/2019/11/18/center%20os%20%E9%83%A8%E7%BD%B2%20swoole%20/"/>
       <url>/2019/11/18/center%20os%20%E9%83%A8%E7%BD%B2%20swoole%20/</url>
