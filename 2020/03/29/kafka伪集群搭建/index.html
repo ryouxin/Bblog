@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aamen</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="aamen,"> 
+    <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354,"> 
+    <meta name="author" content="Aamen"> 
+    <link rel="alternative" href="atom.xml" title="Aamen" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">kafka伪集群搭建</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">kafka伪集群搭建</h1>
+        <div class="stuff">
+            <span>三月 29, 2020</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>一、安装java环境，不再赘述。</p>
+<p>二、下载kafka安装包</p>
+<p>　　<a href="http://kafka.apache.org/downloads" target="_blank" rel="noopener">http://kafka.apache.org/downloads</a></p>
+<p>　　选择 kafka-2.10-0.10.2.0.tgz 下载</p>
+<p>三、搭建集群</p>
+<p>3.1在/opt目录下创建kafka/目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /opt/kafka</span><br></pre></td></tr></table></figure>
+<p>3.2将下载的 kafka-2.10-0.10.2.0.tgz 放到 /opt/kafka/ 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/kafka</span><br><span class="line">tar -zxvf kafka-2.10-0.10.2.0.tgz</span><br></pre></td></tr></table></figure>
+<p>3.3创建kafka日志目录，这里我创建的伪集群有三台服务器，所以创建三个日志目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /opt/kafka/kafkalogs1 kafkalogs2 kafkalogs3</span><br></pre></td></tr></table></figure>
+<p>3.4进入kafka-2.10-0.10.2.0.tgz的解压出来的 conf/ 目录，修改配置文件，同样集群的三台服务器分别对应一个配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/kafka/kafka_2.10-0.10.2.0/config</span><br><span class="line">cp server.properties server.properties1</span><br><span class="line">cp server.properties server.properties2</span><br><span class="line">cp server.properties server.properties3</span><br></pre></td></tr></table></figure>
+<p>修改server.properties1、2、3，主要修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">server.properties1:</span><br><span class="line">  broker.id=0</span><br><span class="line">  host.name=192.168.10.130</span><br><span class="line">  port=9092</span><br><span class="line">  log.dirs=/opt/kafka/kafkalogs1</span><br><span class="line">  zookeeper.connect=192.168.10.130:2181,192.168.10.130:2182,192.168.10.130:2183</span><br><span class="line">server.properties2:</span><br><span class="line">  broker.id=1</span><br><span class="line">  host.name=192.168.10.128</span><br><span class="line">  port=9093</span><br><span class="line">  log.dirs=/opt/kafka/kafkalogs2</span><br><span class="line">  zookeeper.connect=192.168.10.130:2181,192.168.10.130:2182,192.168.10.130:2183</span><br><span class="line">server.properties3:</span><br><span class="line">  broker.id=2</span><br><span class="line">  host.name=192.168.10.128</span><br><span class="line">  port=9094</span><br><span class="line">  log.dirs=/opt/kafka/kafkalogs3</span><br><span class="line">  zookeeper.connect=192.168.10.130:2181,192.168.10.130:2182,192.168.10.130:2183</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+<p>配置文件解析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">broker.id=0  #当前机器在集群中的唯一标识，和zookeeper的myid性质一样</span><br><span class="line">port=9092 #当前kafka对外提供服务的端口默认是9092</span><br><span class="line">host.name=192.168.10.130#这个参数默认是关闭的，在0.8.1有个bug，DNS解析问题，失败率的问题。</span><br><span class="line">num.network.threads=3 #这个是borker进行网络处理的线程数</span><br><span class="line">num.io.threads=8 #这个是borker进行I/O处理的线程数</span><br><span class="line">log.dirs=/opt/kafka/kafkalogs/ #消息存放的目录，这个目录可以配置为“，”逗号分割的表达式，上面的num.io.threads要大于这个目录的个数这个目录，如果配置多个目录，新创建的topic他把消息持久化的地方是，当前以逗号分割的目录中，那个分区数最少就放那一个</span><br><span class="line">socket.send.buffer.bytes=102400 #发送缓冲区buffer大小，数据不是一下子就发送的，先回存储到缓冲区了到达一定的大小后在发送，能提高性能</span><br><span class="line">socket.receive.buffer.bytes=102400 #kafka接收缓冲区大小，当数据到达一定大小后在序列化到磁盘</span><br><span class="line">socket.request.max.bytes=104857600 #这个参数是向kafka请求消息或者向kafka发送消息的请请求的最大数，这个值不能超过java的堆栈大小</span><br><span class="line">num.partitions=1 #默认的分区数，一个topic默认1个分区数</span><br><span class="line">log.retention.hours=168 #默认消息的最大持久化时间，168小时，7天</span><br><span class="line">message.max.byte=5242880  #消息保存的最大值5M</span><br><span class="line">default.replication.factor=2  #kafka保存消息的副本数，如果一个副本失效了，另一个还可以继续提供服务</span><br><span class="line">replica.fetch.max.bytes=5242880  #取消息的最大直接数</span><br><span class="line">log.segment.bytes=1073741824 #这个参数是：因为kafka的消息是以追加的形式落地到文件，当超过这个值的时候，kafka会新起一个文件</span><br><span class="line">log.retention.check.interval.ms=300000 #每隔300000毫秒去检查上面配置的log失效时间（log.retention.hours=168 ），到目录查看是否有过期的消息如果有，删除</span><br><span class="line">log.cleaner.enable=false #是否启用log压缩，一般不用启用，启用的话可以提高性能</span><br><span class="line">zookeeper.connect=192.168.10.130:2181,192.168.10.130:2182,192.168.10.130:2183  #设置zookeeper的连接端口</span><br><span class="line">zookeeper.connection.timeout.ms=6000  #zookeeper的session的过期时间</span><br><span class="line">zookeeper.sync.time.ms=2000  #指定多久消费者更新offset到zookeeper中</span><br><span class="line">group.id=test-consumer-group #(必需)consumer组id</span><br><span class="line">consumer.timeout.ms=5000　　#消费者超时</span><br><span class="line">auto.commit.enable=true #自动向zookeeper提交offset信息</span><br><span class="line">auto.commit.interval.ms=1000  #自动更新时间</span><br><span class="line">#consumer.id=xxx   #当前consumer的标识,如果不设置会自动生成</span><br></pre></td></tr></table></figure>
+<p>四、启动kafka前修改启动脚本 bin/kafka-server-start.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将 export KAFKA_HEAP_OPTS=&quot;-Xmx1G-Xms1G&quot;</span><br><span class="line">改为 export KAFKA_HEAP_OPTS=&quot;-Xmx256M -Xms128M&quot;</span><br></pre></td></tr></table></figure>
+<p>五、启动kafka</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/kafka/kafka_2.10-0.10.2.0</span><br><span class="line">bin/kafka-server-start.sh config/server.properties1</span><br><span class="line">bin/kafka-server-start.sh config/server.properties2</span><br><span class="line">bin/kafka-server-start.sh config/server.properties3</span><br></pre></td></tr></table></figure>
+<p>当看到终端输出“[Kafka Server 0], started (kafka.server.KafkaServer)”等相关信息时，说明kafka集群启动成功。</p>
+<p>六、创建topic验证是否创建成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#创建Topic</span><br><span class="line">bin/kafka-topics.sh --create --zookeeper zookeeper_node:2181 --replication-factor 2 --partitions 1 --topic test</span><br><span class="line">#解释</span><br><span class="line">partitions指定topic分区数，replication-factor指定topic每个分区的副本数</span><br><span class="line">partitions分区数:</span><br><span class="line">　　partitions ：分区数，控制topic将分片成多少个log。可以显示指定，如果不指定则会使用broker(server.properties)中的num.partitions配置的数量,</span><br><span class="line">虽然增加分区数可以提供kafka集群的吞吐量、但是过多的分区数或者或是单台服务器上的分区数过多，会增加不可用及延迟的风险。因为多的分区数，意味着需要打开更</span><br><span class="line">多的文件句柄、增加点到点的延时、增加客户端的内存消耗。分区数也限制了consumer的并行度，即限制了并行consumer消息的线程数不能大于分区数,分区数也限制了</span><br><span class="line">producer发送消息是指定的分区。如创建topic时分区设置为1，producer发送消息时通过自定义的分区方法指定分区为2或以上的数都会出错的；这种情况可以通过</span><br><span class="line">alter –partitions 来增加分区数。</span><br><span class="line">replication-factor副本</span><br><span class="line">　　replication factor 控制消息保存在几个broker(服务器)上，一般情况下等于broker的个数。</span><br><span class="line">　　如果没有在创建时显示指定或通过API向一个不存在的topic生产消息时会使用broker(server.properties)中的default.replication.factor配置的数量</span><br><span class="line">#在控制台上创建一个发布者</span><br><span class="line">bin/kafka-console-producer.sh --broker-list kafka_node:9092 --topic test</span><br><span class="line"></span><br><span class="line">#在控制台创建一个消费者</span><br><span class="line">bin/kafka-console-consumer.sh --zookeeper zookeeper_node:2181 --topic test --from-beginning</span><br></pre></td></tr></table></figure>
+<p> 七、其他命令</p>
+<p>7.1、查看topic</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --list --zookeeper zookeeper_node:2181</span><br><span class="line">#就会显示我们创建的所有topic</span><br></pre></td></tr></table></figure>
+<p>7.2、查看topic状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --describe --zookeeper zookeeper_node:12181 --topic test</span><br><span class="line">#下面是显示信息</span><br><span class="line">Topic:ssports    PartitionCount:1    ReplicationFactor:2    Configs:</span><br><span class="line">Topic: test      Partition: 0    Leader: 1    Replicas: 0,1    Isr: 1</span><br><span class="line">#分区为为1  复制因子为2   他的  shuaige的分区为0 </span><br><span class="line">#Replicas: 0,1   复制的为0，1</span><br></pre></td></tr></table></figure>
+<p>7.3、增加Topic分区数</p>
+<p>　　为test增加分区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper zookeeper_node:2181  --alter --topic test --partitions 10</span><br></pre></td></tr></table></figure>
+<p>7.4、删除Topic</p>
+<p>　　只会删除zookeeper中的元数据，消息文件需要自己删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-run-class.sh kafka.admin.DeleteTopicCommand --zookeeper zookeeper_node:2181 --topic test</span><br></pre></td></tr></table></figure>
+<p>7.5、查看Topic消费进度</p>
+<p>　　这个会显示出consumer group的offset情况， 必须参数为–group， 不指定–topic，默认为所有topic</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker</span><br></pre></td></tr></table></figure>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title="0" data-url="http://link.hhtjim.com/163/5146554.mp3"></li>
+                    
+                        <li title="1" data-url="http://link.hhtjim.com/qq/001faIUs4M2zna.mp3"></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id="gitalk-container" class="comment link" data-ae="false" data-ci="dd9478fe9b45c0677efd" data-cs="8dd7f2038439badc74850b24f0f837561a6a8765" data-r="Bblog" data-o="ryouxin" data-a="ryouxin" data-d="false">查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-131509355-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+</html>
