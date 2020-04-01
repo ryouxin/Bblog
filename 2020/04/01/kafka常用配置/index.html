@@ -27,7 +27,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">center os 部署 swoole</h3>
+    <h3 class="subtitle">kafka常用配置</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -44,32 +44,16 @@
     <div class="section">
         <div class="article">
     <div class="main">
-        <h1 class="title">center os 部署 swoole</h1>
+        <h1 class="title">kafka常用配置</h1>
         <div class="stuff">
-            <span>十一月 18, 2019</span>
+            <span>四月 01, 2020</span>
             
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/java/">java</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/kafka/">kafka</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/分布式/">分布式</a></li></ul>
+
 
         </div>
         <div class="content markdown">
-            <p>今天通过pecl安装 swoole<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pecl install swoole</span><br></pre></td></tr></table></figure></p>
-<p>步骤很简单，但是最后安装成功后发现phpinfo()中未显示swoole扩展，执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -m | grep swoole</span><br></pre></td></tr></table></figure>
-<p>发现报错如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Warning: PHP Startup: Unable to load dynamic library &apos;/usr/lib64/php/modules/swoole.so&apos; - /usr/lib64/php/modules/swoole.so: undefined symbol: mysqlnd_find_charset_nr in Unknown on line 0</span><br></pre></td></tr></table></figure><br>        仔细看报错发现这条报错是由swoole.so报出来的，说明在加载swoole.so的时候报的找不到 mysqlnd_find_charset_nr ，这是一个以 mysqlnd 打头的一个关键字，而 mysqlnd 又是 PHP 的一个扩展，通过阅读 swoole/swoole.mysql.c 的源码我们发现有如下一段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const MYSQLND_CHARSET* cset = mysqlnd_find_charset_nr(client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">if (cset == NULL)</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">    swoole_php_fatal_error(E_ERROR, &quot;unknown mysql charset[%s].&quot;, client-&gt;connector.character_set);</span><br><span class="line"> </span><br><span class="line">    RETURN_FALSE;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从上面的源码我们可以看出，原来 swoole 是需要依赖 msyqlnd 这个扩展的，我们发现 phpinfo() 里面 msyqlnd 扩展是存在的为什么还会报这个错呢。</p>
-<p>　　最后发现 PHP默认加载的扩展都在 /usr/lib64/php/modules/ 这个目录里在，这里面的 .so 文件是默认加载的，关于这些扩展的配置不是在 /etc/php.ini 中，而是在 /etc/php.d/ 这个目录中，这个目录当中的所有的 .ini 文件是在 /etc/php.ini 加载完成后再加载的，而我们的 extension=swoole.so 的配置是写在 /etc/php.ini 的文件末尾，所以是先加载了 swoole.so 然后再加载 mysqlnd.so，这就导致了 swoole 找不到 mysqlnd_find_charset_nr 。</p>
-<p>解决方法：<br>1、将/etc/php.d/ 目录中的mysqlnd.ini文件删除</p>
-<p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=mysqlnd.so</p>
-<p>3、重新启动 php-fpm </p>
-<p>这样可以解决问题了，同样可能还会遇到以下报错：</p>
-<p>PHP Warning: PHP Startup: Unable to load dynamic library ‘/usr/lib64/php/modules/swoole.so’ - /usr/lib64/php/modules/swoole.so: undefined symbol: php_sockets_le_socket in Unknown on line 0</p>
-<p>解决的方法也是类似的：</p>
-<p>1、将/etc/php.d/ 目录中的sockets.ini文件删除</p>
-<p>2、在 /etc/php.ini 的 extension=swoole.so 上面一行添加 extension=sockets.so</p>
-<p>3、重新启动 php-fpm </p>
-<p>问题解决，安装swoole过程中，如果有其它报错，也可以参考Github上关于swoole的issue，附上链接：</p>
-<p>Swoole安装问题，及websocket示例问题总结</p>
-
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#当前机器在集群中的唯一标识，和zookeeper的myid性质一样</span><br><span class="line">broker.id=1</span><br><span class="line">#当前kafka对外提供服务的端口默认是9092</span><br><span class="line">port=19092 </span><br><span class="line">#这个参数默认是关闭的，在0.8.1有个bug，DNS解析问题，失败率的问题。</span><br><span class="line">host.name=192.168.1.224</span><br><span class="line">#外网服务暴露</span><br><span class="line">listeners=PLAINTEXT://192.168.1.224:9094</span><br><span class="line">advertised.listeners=PLAINTEXT://192.168.1.224:9094</span><br><span class="line">#这个是borker进行网络处理的线程数</span><br><span class="line">num.network.threads=3 </span><br><span class="line">#这个是borker进行I/O处理的线程数</span><br><span class="line">num.io.threads=8 </span><br><span class="line">#消息存放的目录，这个目录可以配置为“，”逗号分割的表达式，上面的num.io.threads要大于这个目录的个数这个目录，如果配置多个目录，新创建的topic他把消息持久化的地方是，当前以逗号分割的目录中，那个分区数最少就放那一个</span><br><span class="line">log.dirs=/usr/local/kafka/kafka_2.11-0.9.0.1/kafka_log</span><br><span class="line">#发送缓冲区buffer大小，数据不是一下子就发送的，先回存储到缓冲区了到达一定的大小后在发送，能提高性能</span><br><span class="line">socket.send.buffer.bytes=102400 </span><br><span class="line">#kafka接收缓冲区大小，当数据到达一定大小后在序列化到磁盘</span><br><span class="line">socket.receive.buffer.bytes=102400 </span><br><span class="line">#这个参数是向kafka请求消息或者向kafka发送消息的请请求的最大数，这个值不能超过java的堆栈大小</span><br><span class="line">socket.request.max.bytes=104857600 </span><br><span class="line">#默认的分区数，一个topic默认1个分区数</span><br><span class="line">num.partitions=1 </span><br><span class="line">#默认消息的最大持久化时间，168小时，7天</span><br><span class="line">log.retention.hours=168 </span><br><span class="line">#消息保存的最大值5M</span><br><span class="line">message.max.byte=5242880 </span><br><span class="line">#kafka保存消息的副本数，如果一个副本失效了，另一个还可以继续提供服务</span><br><span class="line">default.replication.factor=2 </span><br><span class="line">#取消息的最大直接数</span><br><span class="line">replica.fetch.max.bytes=5242880 </span><br><span class="line">#这个参数是：因为kafka的消息是以追加的形式落地到文件，当超过这个值的时候，kafka会新起一个文件</span><br><span class="line">log.segment.bytes=1073741824 </span><br><span class="line">#每隔300000毫秒去检查上面配置的log失效时间（log.retention.hours=168 ），到目录查看是否有过期的消息如果有，删除</span><br><span class="line">log.retention.check.interval.ms=300000 </span><br><span class="line">#是否启用log压缩，一般不用启用，启用的话可以提高性能</span><br><span class="line">log.cleaner.enable=false </span><br><span class="line">#设置zookeeper的连接端口</span><br><span class="line">zookeeper.connect=192.168.1.224:2181,192.168.1.225:2181,192.168.1.226:1218 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
