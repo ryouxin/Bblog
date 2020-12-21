@@ -27,7 +27,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">android选择打包类型(release、debug)</h3>
+    <h3 class="subtitle">To many open files 问题分析及解决方案</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -44,19 +44,23 @@
     <div class="section">
         <div class="article">
     <div class="main">
-        <h1 class="title">android选择打包类型(release、debug)</h1>
+        <h1 class="title">To many open files 问题分析及解决方案</h1>
         <div class="stuff">
-            <span>六月 04, 2019</span>
+            <span>十二月 21, 2020</span>
             
 
         </div>
         <div class="content markdown">
-            <ol>
-<li>在Android Studio 顶部栏中有Build 下拉菜单中有 select Build Variants… </li>
-<li>在Build Variants 中model 选择需要输出的arr 包类型，debug 或者 release 类型</li>
-<li>在Android Studio 顶部栏中有Build 下拉菜单中有 Rebuild Project</li>
-<li>在Model 的build/outputs/arr/ 输出arr 文件</li>
-</ol>
+            <p>首先记录几个命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#查看当前系统打开的文件数</span><br><span class="line">lsof | wc -l  </span><br><span class="line">watch &quot;lsof | wc -l&quot;</span><br><span class="line"></span><br><span class="line">#可以用lsof -p &lt;pid of process&gt;看打开的文件句柄数.查看某个进程的打开文件数</span><br><span class="line">#-K 在输出的结果中显示文件描述符对应的线程号</span><br><span class="line">lsof -p  1234|wc -l</span><br><span class="line"></span><br><span class="line">#查看Linux系统打开的文件句柄数：</span><br><span class="line">#第一列：进程打开的文件句柄数</span><br><span class="line">#第二列：PID</span><br><span class="line">lsof -n | awk &apos;&#123;print $2&#125;&apos;| sort | uniq -c | sort -nr </span><br><span class="line">   </span><br><span class="line">#查看系统打开句柄最大数量</span><br><span class="line">more /proc/sys/fs/file-max</span><br><span class="line"></span><br><span class="line">修改linux单进程最大文件连接数</span><br><span class="line">修改linux系统参数。vi /etc/security/limits.conf 添加</span><br><span class="line">*　　soft　　nofile　　65536</span><br><span class="line">*　　hard　　nofile　　65536</span><br><span class="line">修改以后保存，注销当前用户，重新登录，执行ulimit -a ,ok ,参数生效了：</span><br><span class="line"></span><br><span class="line">#查看系统句柄数信息</span><br><span class="line">ulimit -a</span><br><span class="line"></span><br><span class="line">#修改系统最大句柄数</span><br><span class="line">ulimit -n </span><br><span class="line"></span><br><span class="line">#查一下当前已有的连接数，再来判断open files 为1024 是不是小</span><br><span class="line">lsof -p $java_pid | wc -l</span><br><span class="line"></span><br><span class="line">#系统级设置对所有用户有效。</span><br><span class="line">#可通过两种方式查看系统最大文件限制                 </span><br><span class="line">cat /proc/sys/fs/file-max          </span><br><span class="line">#修改配置/etc/sysctl.conf文件</span><br><span class="line">fs.file-max=2048</span><br><span class="line">#通知系统启用这项配置 </span><br><span class="line">sysctl -p</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>#strace<br>套接字泄露确实在发生，但是却没有办法能明确定位到问题在哪里。如果能直接看到进程调用 socket 和 close 系统调用的记录，就可以知道在哪里发生了套接字泄露。</p>
+<p>于是找到了 strace 工具，该工具可以跟踪进程的系统调用记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -t -T -f -p 23345 -e trace=network,close -o strace.out</span><br></pre></td></tr></table></figure>
+<p>选项 -t 表明在输出结果中加上时间戳信息，-T 表示在输出结果中加上系统调用的耗时信息，-f 表示在输出结果中加上关联的线程号信息 (Trace child processes as they are created by currently traced processes as a result of the fork(2), vfork(2) and clone(2) system calls. Note that -p PID -f will attach all threads of process PID if it is multi-threaded, not only thread with thread_id = PID.)，-p 输出指定进程的结果，-e 表示只输出网络相关和 close() 系统调用的日志，-o 表示将输出结果存储到指定文件中。</p>
+<p>说明，上述输出经过了整理，过滤了无关的输出并按照线程分组按时间排序。</p>
+<p>可以直接从输出结果中发现未成对的 socket()/close() 调用，这表明出现了套接字泄露。同时也可以看到发生泄露的线程号 (904)。</p>
+<p>在网络服务出现 Too many open files 类似的异常之后，可以考虑排查服务是否存在网络套接字文件描述符泄露 的 BUG。</p>
+<p>首先使用 jps 工具获取到目标服务的进程号<br>使用 lsof 工具查看目标进程打开的文件描述符的类型和特征<br>使用 jstack 工具查看目标进程的线程堆栈是否有异常<br>使用 strace 工具查看目标进程的系统调用，考虑添加 -f 参数显示对应的线程号<br>使用 jstack 工具找到目标进程中对应线程号的堆栈信息<br>查看对应代码，最终定位问题</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
