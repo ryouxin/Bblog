@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">vue引用element-ui与webpack</h3>
+    <h3 class="subtitle">位运算</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,23 +43,25 @@
     <div class="section">
         <div class="article">
     <div class="main">
-        <h1 class="title">vue引用element-ui与webpack</h1>
+        <h1 class="title">位运算</h1>
         <div class="stuff">
-            <span>二月 12, 2019</span>
+            <span>二月 08, 2021</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/vue/">vue</a></li><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/前端/">前端</a></li></ul>
-
 
         </div>
         <div class="content markdown">
-            <p>从新建vue项目到引入组件Element<br>一、新建项目<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.查看 node和npm是不是已经安装好命令：node -v  npm -v (没有安装的先安装环境);</span><br><span class="line">2.npm install -g cnpm --registry=https://registry.npm.taobao.org  (安装国内的淘宝镜像文件，后面的安装npm可以全部改为cnpm)</span><br><span class="line">3.安装 vue-cli   </span><br><span class="line">1、cnpm install -g vue</span><br><span class="line">2、cnpm install -g vue-cli </span><br><span class="line">4. 安装 webpack   cnpm install -g webpack </span><br><span class="line">5.cd  你的运行目录</span><br><span class="line">6.新建vue项目      vue init webpack vuedemo</span><br><span class="line">7.进入项目目录     cd vuedemo</span><br><span class="line">8.安装依赖        cnpm install</span><br><span class="line">9.运行项目        cnpm run dev</span><br><span class="line">10.发布项目       cnpm run build</span><br><span class="line">注：mac电脑需要在安装淘宝镜像前执行： sudo chown -R $USER /usr/local</span><br></pre></td></tr></table></figure><br>二、使用element-ui前需安装修改的配置：</p>
-<ol>
-<li>安装 loader 模块：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cnpm install style-loader -D</span><br><span class="line">cnpm install css-loader -D</span><br><span class="line">cnpm install file-loader -D</span><br></pre></td></tr></table></figure></li>
-<li>安装 Element-UI 模块<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install element-ui --save </span><br></pre></td></tr></table></figure>
-三、引入Element，前面已经全局安装了element-ui，只需要在Vue项目中引入即可<br>打开项目：src/main.js,添加下面三条<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import ElementUI from &apos;element-ui&apos;</span><br><span class="line">import &apos;element-ui/lib/theme-chalk/index.css&apos;</span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>四、然后在.vue文件里就直接可以用了</p>
+            <p>##位运算基础概念</p>
+<p>1、原码<br>一个正数，按照绝对值大小转换成二进制数，称为原码<br>2、反码<br>将二进制数按位取反，所得的新二进制数称为原二进制数的反码<br>其实就是把原码中的0变为1,1变为0<br>例如：0000 0101 和1111 1010就是互为反码<br>3、补码<br>在反码的基础上加1称为补码，一般在算负数的时候会用到</p>
+<p>###1、正整数转换二进制<br>除二取余，然后倒序排列，高位补零。</p>
+<p>43  21  10  5  2  1<br>  /2  /2  /2 /2 /2 /2<br>   1   1   0  1  0  1<br>从左至右得出二进制  110101 十进制为52<br>高位补零 00110100</p>
+<p>###2、负数二进制<br>先将对应的正整数转换成二进制<br>对二进制取反，这边有个不一样的地方，原来那个正数的补位都是0，但是你取反了，那就证明负数补位的时候，要补1<br>然后对结果再加1(这里的1，是十进制的1，但是十进制的1对应的二进制就是00000001)<br>23  11  5   2   1<br>  /2  /2  /2  /2 /2<br>   1    1   1  0  1<br>负数从右至左得出 10111<br>取反 01000 加一 01001</p>
+<p>##位运算<br>1、&amp; 与<br>规则：先将两个数字转换为二进制，然后每一位进行匹配<br>只有当两个位置上都是1的时候，才会返回1<br>例子：9&amp;12<br>9：1001<br>12:1100<br>所以结果应该是：1000=》转换为十进制：8</p>
+<p>2、| 或<br>规则：先将两个数字转换为二进制，然后每一位进行匹配<br>两个位只要有一个为1，那么结果就是1，否则就为0。<br>例子：9|12<br>9：1001<br>12:1100<br>所以结果应该是：1101=》转换为十进制：13</p>
+<p>3、^ 异或<br>规则：先将两个数字转换为二进制，然后每一位进行匹配<br>两个操作数的位，相同则结果为0，不同则结果为1。<br>0 ^ 1 =1，1 ^ 1 = 0，0 ^ 0 = 0，1 ^ 0 = 1<br>例子：9^12<br>9：1001<br>12:1100<br>所以结果应该是：0101=》转换为十进制：5</p>
+<p>4、~ 取反<br>规则：这个是对一个数字的操作<br>先将这个数字转换为二进制<br>然后每个位上的数字，0变成1,1变成0<br>例子：~9<br>9:1001<br>~9:0110<br>所以结果应该是0110=》转换为十进制：6<br>呵呵，你自己试试，答案是错的。。不是6，答案是-10<br>为什么？<br>先说一个概念int类型是4字节，1字节是8位，所以int类型有32位<br>然后，9的值是1001，其实你全部写出来应该是0000 0000 000…(前面有28个0)然后1001<br>所以对9取反，不能简单的写成0110,因为0110代表的是0000 0000 000…(前面有28个0)然后0110<br>~9:1111 1111 1111 1111 1111 1111 1111 0110<br>接着你可以在代码中试试：<br>String i = Integer.toBinaryString(-10);<br>System.out.println(i);<br>System.out.println(i.length());<br>打印出来的就是：<br>11111111111111111111111111110110<br>32<br>结论：所以这里就要说到，在上文中提到的二进制的有符号数和无符号数<br>再重新阐述一次：简单来说，例如byte长度是8位，无符号数的情况下，1111 1111 =》255<br>有符号数的情况下，因为最高位1代表负号，0代表正号，所以 0111 1111 =》127，所以1000 0000 =》-128</p>
+<p>所以你还记得byte类型能表示的长度是-128—127吗，就是这个原因<br>那么在java中几乎所有的正数取反，会得到负数，负数取反会得到正数！<br>比如1000 0001 这个二进制的有符号数，他代表的值就是-127<br>所以这是取反操作的一个坑，也是不少网络给出的什么二进制转换器输入1000 0000得到的值为128的原因（因为他识别成无符号二进制数字）</p>
+<p>5、&gt;&gt; (右移运算符)和&lt;&lt; (左移运算符)</p>
+<p>这两个东西，放在一起记录，是因为这两个操作是一样的，就是一个位移操作<br>1、举例1、12&gt;&gt;2<br>操作：<br>先将12转换为二进制 ==》1100<br>然后把整体向右移动两位 ==》0011<br>最后转换为十进制 ==》 1<em>2的0次方+1</em>2的1次方=3<br>所以答案：3<br>2、举例2、12&lt;<2 操作：="" 先将12转换为二进制="=》1100" 然后把整体向左移动两位="=》110000" 最后转换为十进制="=》" 1*2的4次方+1*2的5次方="48" 所以答案：48="" 结论：所以也能简单的理解为="">&gt;3就是原来的数字除以2的3次方，&lt;&lt;3就是乘以2的3次方</2></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
