@@ -3,6 +3,23 @@
   
     
     <entry>
+      <title>数据库位运算</title>
+      <link href="/2021/02/08/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+      <url>/2021/02/08/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BD%8D%E8%BF%90%E7%AE%97/</url>
+      
+        <content type="html"><![CDATA[<p>##一、字符串表示:<br>1.0-6岁儿童 2.孕产妇 3.高血压 4.糖尿病 5.长期卧床患者 6.老年人 7.建卡贫困户 8.计划生育特殊家庭 9.残疾人 10.肺结核 11.严重精神障碍 12.一般人群 13.低保户五保户 14.重点优抚对象<br>存入后为  1;2;4;7;10;12;</p><p>查询方式通过like来查询</p><p>##二、”位”标识<br>1:儿童<br>10:孕产妇<br>100:高血压 …<br>101:高血压儿童<br>110:高血压孕产妇…<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查询方式通过</span><br><span class="line">select * from 人群分类表 where 人群类别  &amp;b’10’ 来查询获得到所有孕产妇</span><br></pre></td></tr></table></figure></p><p>该查询方式<br>（1）无字段冗余，节省存储空间；<br>（2）可拓展性强；<br>（3）查询效率高。</p><p>##三、位运算<br>1.0-6岁儿童 2.孕产妇 3.高血压 …<br>插入数据时计算为<br>2的一次方; 2的平方; 2的三次方; …<br>即:<br>2:儿童; 4:孕产妇; 8:高血压 …</p><p>入库时<br>10:高血压儿童<br>12:高血压孕产妇<br>14:高血压儿童孕产妇(测试数据)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查询方式  select * from 人群分类表 where 人群类别 &amp; 4;                                     得出所有孕产妇</span><br><span class="line">select * from 人群分类表 where 人群类别 &amp; 4 and 人群类别 &amp; 8;      得出所有高血压孕产妇</span><br></pre></td></tr></table></figure></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>java常用lambda</title>
       <link href="/2020/12/28/java%E5%B8%B8%E7%94%A8lambda/"/>
       <url>/2020/12/28/java%E5%B8%B8%E7%94%A8lambda/</url>
@@ -395,9 +412,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
@@ -488,9 +505,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
@@ -524,9 +541,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 运维 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
